@@ -8,13 +8,22 @@
     you should use a script to produce this plot, with both the serial
     fraction and the maximum number of cores as parameters.
 
+Asymptotically levels off to a 10x speedup compared to a single-core system.
+- Amdahl's law
+
 2.  Suppose a particular program can be partitioned into perfectly
     independent tasks, each of which takes time tau.  Tasks are
     set up, scheduled, and communicated to p workers at a (serial)
     central server; this takes an overhead time alpha per task.
     What is the theoretically achievable throughput (tasks/time)?
 
+    time/task = (alpha time/task serial work) + (tau/p time/task parallel work)
+         assume p grows arbitrarly large -> tau/p = 0
+    tasks/time = 1/(time/task) = 1/alpha	
+
 3.  Under what circumstances is it best to not tune?
+
+When code is only run once, such that tuning time is greater than system runtime without tuning.
 
 4.  The class cluster consists of eight nodes and fifteen Xeon Phi
     accelerator boards.  Based on an online search for information on
@@ -23,5 +32,21 @@
     you computed this, and give URLs for where you got the parameters
     in your calculation.  (We will return to this question again after
     we cover some computer architecture.)
+
+    per core = 2 flops/FMA * 4 FMA/vector FMA * 2 vector FMA/cycle * 3.2*10^9 cycle/second = 5.2 GFlops/sec
+    8 nodes * 12 cores/node * 51.2 GFlops/core/sec = 4.9 TFlops/second
+
+    http://ark.intel.com/products/83352/Intel-Xeon-Processor-E5-2620-v3-15M-Cache-2_40-GHz
+    http://cornell-cs5220-f15.github.io/cluster.html
     
 5.  What is the approximate theoretical peak flop rate for your own machine?
+
+    I have a i5-5200U
+
+    turbo with 2 cores is 2.5GHz
+
+    theoretical max flop rate/core = 2 flops/FMA * 4 FMA/vector_FMA * 2 vector_FMA/cycle * 2.5*10^9 cycles/sec
+    2 cores -> max flop rate       = 80 GFlops/second
+
+    http://laptopmedia.com/processor/intel-core-i5-5200u/
+    http://www.anandtech.com/show/8814/intel-releases-broadwell-u-new-skus-up-to-48-eus-and-iris-6100/2	

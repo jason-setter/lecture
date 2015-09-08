@@ -11,12 +11,41 @@ with questions for class!
     you computed this, and give URLs for where you got the parameters
     in your calculation.  (We will return to this question again after
     we cover some computer architecture.)
-    
+
+    Nodes:
+    per core = 2 flops/FMA * 4 FMA/vector FMA * 2 vector FMA/cycle * 3.2*10^9 cycle/second = 5.2 GFlops/sec
+    8 nodes * 12 cores/node * 51.2 GFlops/core/sec
+      = 4.9 TFlops/second
+
+    Accelerators:
+    Freq       = 1.05 GHz
+    # of cores = 60
+    theoretical flop rate = 1.05GHz * 60 * 16 FMA/cycle * 15 accelerators
+                          = 15.1 TFlops/second
+
+    http://ark.intel.com/products/83352/Intel-Xeon-Processor-E5-2620-v3-15M-Cache-2_40-GHz
+    http://cornell-cs5220-f15.github.io/cluster.html
+    http://ark.intel.com/products/71992/Intel-Xeon-Phi-Coprocessor-5110P-8GB-1_053-GHz-60-core
+   
+
 2.  What is the approximate theoretical peak flop rate for your own machine?
+
+    I have a i5-5200U
+
+    turbo with 2 cores is 2.5GHz
+
+    theoretical max flop rate/core = 2 flops/FMA * 4 FMA/vector_FMA * 2 vector_FMA/cycle * 2.5*10^9 cycles/sec
+    2 cores -> max flop rate       = 80 GFlops/second
+
+    http://laptopmedia.com/processor/intel-core-i5-5200u/
+    http://www.anandtech.com/show/8814/intel-releases-broadwell-u-new-skus-up-to-48-eus-and-iris-6100/2	
 
 3.  Suppose there are t tasks that can be executed in a pipeline
     with p stages.  What is the speedup over serial execution of the
     same tasks?
+
+    parallel time = (p time to finish first task) + (1 time to finish every other task afterward) * (t-1 tasks left)
+    speedup = (serial time) / (parallel time) = (t*p) / (p+t-1)
 
 4.  Consider the following list of tasks (assume they can't be pipelined):
 
@@ -30,6 +59,9 @@ with questions for class!
     What is the minimum serial time between starting to compile and having
     a compiled application?  What is the minimum parallel time given
     an arbitrary number of processors?
+
+    serial time   = 1+.5+.25+.5+.5 = 2.75 hours
+    parallel time = 1+.25+.5+.5    = 2.25 hours
 
 5.  Clone the membench repository from GitHub:
 

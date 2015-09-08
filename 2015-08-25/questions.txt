@@ -18,6 +18,17 @@ In practice, this took X time.  This includes
 Consider the following questions:
 
 1. What is a simple model that would predict this time?
+
+   Total time = (T1 time = max time to count number of people in row)
+              + (T2 time = time to add two numbers together) * (number of rows - 1)
+	      + (T3 overhead time to start count, realize everyone done counting, etc)
+
 2. What about a simple model to predict time for one person to count?
+
+   Total time = (time to count one person) * (number of people)
+
 3. How big should the class be before the parallel method takes less time?
+
+   The class has to be big enough such that the parallelized work of counting in rows and
+   then summing later is faster than counting one-by-one. Probably around 30 with at least 3 rows.
 

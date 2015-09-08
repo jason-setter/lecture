@@ -18,33 +18,63 @@ and cache), and depends on the cache size. Suppose the cache uses a
 least-recently-used (LRU) policy for deciding which data to flush when moving
 something into an already-full cache.
 
-1. Suppose 16N is significantly larger than the size of our L3 cache. What is
+Algorithm 2N^3 flops
+
+1. Suppose 16N=8*2N is significantly larger than the size of our L3 cache. What is
 the memory-based AI of this code? (Hint: What is the memory-based AI of just the
 innermost loop?)
 
+Matrix C=AB
+
+Can't store the entire row.
+So each data is read N times (of matrix A and B)
+matrix C is written/read once for each data entry
+Total read/writes of mem = (2*N*N^2 + 2*N^2)
+# flops = 2*N^3
+AI = (# flops) / (total ops to mem) = 1 flop/double
 
 2. Now suppose that the cache is substantially larger than 16N, but
 substantially smaller than 8N^2. What is the AI now?
 
+A rows fit in cache, but B does not
+So total read/writes of mem = ( N*N^2 [for B] + 3*N^2 [for A and C] )
+# flops = 2*N^3
+AI=2
 
 3. Now suppose the cache is large enough to hold all of A, B, and C. What is the
 AI now? (Hint: Writing to a byte of memory not already in the cache incurs two
 memory transfers: one to move the data to the cache for writing, and one to move
 the written data back to main memory.)
 
+A and B fit in cache
+So total read/writes of mem = ( 4*N^2 )
+# flops = 2*N^3
+AI = N/2
 
 4. Cache overflowing. On my CPU (Intel i7-4700 HQ), L1, L2, and L3 caches are 32
 KB, 256 KB, and 6 MB respectively. What is the largest problem size N that will
 fit in each cache? What is the arithmetic intensity associated with each problem
 size?
 
+Assume never keep matrix C in cache (since never reused) but keep A and B in cache (shared)
+
+L1 - 16KB for each A and B,  N=  4k  AI=   2k
+L2 - 128KB for each A and B, N= 32k  AI=  64k
+L3 - 3MB for each A and B,   N=375k  AI= 187k
 
 5. My CPU has 4 cores, each of which can do 8 fused multiply-adds per cycle, has
 a clock rate of 2.4 GHz, and a memory bandwidth of 25.6 GB/s. At what arithmetic
 intensity does my machine become CPU-bound?
 
+Theoretical peak Flop/sec = 4*8*2.4GHz = 76.8GFlops/sec = 
+max mem bandwidth = 25.6 GB/s
+
+AI = (76.8GFlops/sec) / (25.6/8 Gdouble/sec) = 24 op/double
 
 6. So, for what size range for N will naive matmul be CPU-bound on my machine?
 
+Since CPU-bound at 24 op/double, N=48
 
 7. So, what will a plot of Flops/sec vs N look like?
+
+Increases linearly Flops/second as N increases until N=48, where it levels off
