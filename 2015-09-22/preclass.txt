@@ -1,7 +1,11 @@
 0.  How much time did you spend on this pre-class exercise, and when?
 
+The night before class, spent 1.5 hrs listening to the lecture and .5 hr doing the questions
+
 1.  What are one or two points that you found least clear in the
     9/22 slide decks (including the narration)?
+
+The exact implementation of how to write pthread code
 
 2.  The pthread_mc.c file in the demo subdirectory runs a Monte Carlo
     simulation to estimate the expected value of a uniform random
@@ -13,6 +17,11 @@
        time per trial (t_trial), and time to update the global
        counters in the critical section (t_update).
 
+       If process doesn't have to do critical section, can still run.
+       Ignore start-up cost.
+
+       run_time = ( max [ t_trial, t_update*p ] + t_update ) * N
+
     b) Run the code with a few different parameter values in order
        to estimate N, t_trial, and t_update for this code on
        a totient compute node.
@@ -21,8 +30,14 @@
        size.  How might you generalize this strategy to automatically
        choose batch sizes for different types of computational
        experiments?
+
+       Make sure the serial portion for all processors in serial
+       is approximately equal to the time it takes to calculate the batch
+       for one processor.
     
 3.  In the workq subdirectory of this directory, there is a basic work
     queue implementation.  Following the strategy outlined in the
     slides, add synchronization calls in the locations marked TODO.
     You should run the code to make sure it behaves as expected!
+
+    
