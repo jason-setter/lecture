@@ -20,7 +20,7 @@ The exact implementation of how to write pthread code
        If process doesn't have to do critical section, can still run.
        Ignore start-up cost.
 
-       run_time = ( max [ t_trial, t_update*p ] + t_update ) * N
+       run_time = ( max [ t_trial, (t_update-1)*p ] + t_update ) * N/p
 
     b) Run the code with a few different parameter values in order
        to estimate N, t_trial, and t_update for this code on
